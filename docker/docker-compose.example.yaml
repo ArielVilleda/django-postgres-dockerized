@@ -16,19 +16,19 @@ services:
         networks:
             - web_app_network
 
-    # WEBSERVICES (DJANGO, OR ANY PYTHON FRAMEWORK INSTALLED IN requirements.txt)
-    web_app_services:
+    # WEB APP (DJANGO, OR ANY PYTHON FRAMEWORK INSTALLED IN requirements.txt)
+    web_app:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile
-        container_name: web_app_services
+        container_name: web_app
         env_file: ../web_app/.env # added env variables to the container wnen executed
         stdin_open: true # to enable terminal docker-compose exec <container_name> /bin/sh
         volumes:
             - ../web_app:/data/web/
         ports:
             # exposed container port (to start the server, if there is a django app,
-            # in the container use: python manage.py runserver 0.0.0.0:8000)
+            # in the container use: python manage.py runserver 0:8000)
             - '8000:8000'
         networks:
             - web_app_network
