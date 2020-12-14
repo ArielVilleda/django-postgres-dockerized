@@ -1,0 +1,41 @@
+version: '3' # Docker version
+
+services:
+    # DB (Postgres)
+    postgres:
+        image: 'postgres:12.5'
+        container_name: postgres
+        restart: always # restart if crashed
+        env_file: ../web_app/.env # POSTGRES USER, PASSWORD AND DB IN THIS FILE
+        ports:
+            - '5432:5432' # defualt postgres port
+        volumes:
+            - postgres_docker_volume:/var/lib/postgres/data
+            - ./postgres/postgresql.conf:/etc/postgres/postgresql.conf
+        command: postgres -c config_file=/etc/postgres/postgresql.conf
+        networks:
+            - web_app_network
+
+    # WEBSERVICES (DJANGO, OR ANY PYTHON FRAMEWORK INSTALLED IN requirements.txt)
+    web_app_services:
+        build:
+            context: ../
+            dockerfile: ./docker/Dockerfile
+        container_name: web_app_services
+        env_file: ../web_app/.env # added env variables to the container wnen executed
+        stdin_open: true # to enable terminal docker-compose exec <container_name> /bin/sh
+        volumes:
+            - ../web_app:/data/web/
+        ports:
+            # exposed container port (to start the server, if there is a django app,
+            # in the container use: python manage.py runserver 0.0.0.0:8000)
+            - '8000:8000'
+        networks:
+            - web_app_network
+
+networks:
+    web_app_network:
+        driver: bridge
+
+volumes:
+    postgres_docker_volume: null
