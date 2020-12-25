@@ -1,7 +1,8 @@
 # Django, Postgres, Docker app
 
 ### Requisitos:
-- Python >=3.8.3
+- Se utiliza la imagen base de docker `python:3.8.3-slim-buster`
+- En el archivo `docker-compose`, se utiliza la imagen base de docker `postgres:12.4`
 
 ### Docker
 - Para hacer build (o rebuild) de la imagen, desde la carpeta raíz del proyecto ejecutar `docker build -t django-app -f .\docker\Dockerfile . ` (-t para asignar un tag a la imagen, el cual nos es muy útil para los comandos a continuación)

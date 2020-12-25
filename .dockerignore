@@ -1,2 +1,4 @@
-.dockerignore
-./docker/Dockerfile
+docker/
+.git
+.vscode
+.env

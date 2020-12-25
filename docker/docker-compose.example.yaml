@@ -1,14 +1,14 @@
-version: '3' # Docker version
+version: '3'  # Docker version
 
 services:
     # DB (Postgres)
-    postgres:
-        image: 'postgres:12.5'
-        container_name: postgres
-        restart: always # restart if crashed
-        env_file: ../web_app/.env # POSTGRES USER, PASSWORD AND DB IN THIS FILE
+    web_app_postgres:
+        image: 'postgres:12.4'
+        container_name: web_app_postgres
+        restart: always  # restart if crashed
+        env_file: ../web_app/.env  # POSTGRES USER, PASSWORD AND DB IN THIS FILE
         ports:
-            - '5432:5432' # defualt postgres port
+            - '5432:5432' # default postgres port
         volumes:
             - postgres_docker_volume:/var/lib/postgres/data
             - ./postgres/postgresql.conf:/etc/postgres/postgresql.conf
@@ -16,20 +16,20 @@ services:
         networks:
             - web_app_network
 
-    # WEB APP (DJANGO, OR ANY PYTHON FRAMEWORK INSTALLED IN requirements.txt)
+    # WEB APP (DJANGO, PYTHON FRAMEWORK INSTALLED WITH requirements.txt)
     web_app:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile
         container_name: web_app
-        env_file: ../web_app/.env # added env variables to the container wnen executed
-        stdin_open: true # to enable terminal docker-compose exec <container_name> /bin/sh
+        env_file: ../web_app/.env  # added env variables to the container wnen executed
+        stdin_open: true  # to enable terminal docker-compose exec <container_name> bash
         volumes:
             - ../web_app:/data/web/
         ports:
             # exposed container port (to start the server, if there is a django app,
             # in the container use: python manage.py runserver 0:8000)
-            - '8000:8000'
+            - '80:8000'
         networks:
             - web_app_network
 

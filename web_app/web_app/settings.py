@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'storages',  # To use static assets
     'corsheaders',
+    'api',
 ]
 
 MIDDLEWARE = [
